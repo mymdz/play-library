@@ -1,0 +1,37 @@
+@import helper._
+@()(implicit request: Request[AnyContent])
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Signin Template for Bootstrap</title>
+
+            <!-- Bootstrap core CSS -->
+        <link href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")" rel="stylesheet">
+
+            <!-- Custom styles for this template -->
+        <link href="@routes.Assets.versioned("stylesheets/auth.css")" rel="stylesheet">
+    </head>
+
+    <body class="text-center">
+        @form(routes.AuthController.postAuth(), 'class -> "form-signin") {
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+
+            @CSRF.formField
+
+            <label for="inputEmail" class="sr-only">Login</label>
+            <input type="text" id="inputEmail" name="login" class="form-control" placeholder="Login" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+            <div class="text-danger">@request.flash.get("error")</div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        }
+        </form>
+    </body>
+</html>

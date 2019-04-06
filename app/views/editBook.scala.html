@@ -1,0 +1,28 @@
+@import controllers.BooksController.BookFormData
+@import helper._
+
+
+@(form: Form[BookFormData], title: String, postUrl: Call)(implicit request: Request[AnyContent], messagesProvider: MessagesProvider)
+
+@main("Books") {
+  <br>
+  <h3>@title</h3>
+  <br><br>
+
+  @helper.form(postUrl) {
+    @CSRF.formField
+
+    <div class="col-md-6 mb-3">
+      @inputText(form("title"), '_label -> "Название", 'class -> "form-control", '_showConstraints -> false)
+    </div>
+    <div class="col-md-6 mb-3">
+      @inputText(form("author"), '_label -> "Автор", 'class -> "form-control", '_showConstraints -> false)
+    </div>
+    <div class="col-md-6 mb-3">
+      @inputText(form("isbn"), '_label -> "ISBN", 'class -> "form-control", '_showConstraints -> false)
+    </div>
+    <br><br>
+    <a href="@routes.BooksController.index()" class="btn btn-danger">Отмена</a>
+    <button class="btn btn-primary">Сохранить</button>
+  }
+}

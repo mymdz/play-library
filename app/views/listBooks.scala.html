@@ -1,0 +1,30 @@
+@(books: Seq[Book])
+
+@main("Books") {
+  <div class="col-md-12">
+      <h1>Книги</h1><br>
+      <a href="@routes.BooksController.create" class="btn btn-success">Добавить</a>
+  </div>
+  <br>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Автор</th>
+      <th>ISBN</th>
+      <th></th>
+    </tr>
+    @for(b <- books) {
+      <tr>
+        <td>@b.id</td>
+        <td>@b.title</td>
+        <td>@b.author</td>
+        <td>@b.isbn</td>
+        <td>
+          <a href="@routes.BooksController.edit(b.id)" class="btn btn-primary">Редактировать</a>
+          <button type="button" class="btn btn-danger" onclick="if(confirm('Точно?')) window.location.href='@routes.BooksController.delete(b.id)'">Удалить</button>
+        </td>
+      </tr>
+    }
+  </table>
+}
