@@ -25,7 +25,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * a path of `/`.
    */
   def index() = Action { implicit request: Request[AnyContent] =>
-    request.session.get("login").map { user =>
+    request.session.get("user_id").map { user =>
       Redirect(routes.BooksController.index)
     }.getOrElse {
       Redirect(routes.AuthController.auth)

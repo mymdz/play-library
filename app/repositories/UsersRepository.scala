@@ -20,16 +20,16 @@ class UsersRepository @Inject() (databaseConfigProvider: DatabaseConfigProvider)
 
   private val query = TableQuery[UsersTableDef]
 
-  def checkCredentials(login: String, hashedPass: String): Boolean = {
+  def checkCredentials(login: String, hashedPass: String): Option[Long] = {
     val promise = db.run {
       val q = for {
         u <- query if u.login === login && u.password === hashedPass
       } yield u.id
 
-      q.exists.result
+      q.result
     }
 
-    Await.result(promise, Duration(3, TimeUnit.SECONDS))
+    Await.result(promise, Duration(3, TimeUnit.SECONDS)).headOption
   }
 
   private class UsersTableDef(tag: Tag) extends Table[User](tag, "users") {

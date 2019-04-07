@@ -29,14 +29,16 @@ class AuthController @Inject()(cc: ControllerComponents, usersRepository: UsersR
     if (form.errors.nonEmpty) {
       authRedirect.flashing("error" -> "Login and password are required fields")
     } else {
-      val success = usersRepository.checkCredentials(form.get.login, Auth.hashPassword(form.get.password))
-      if (success) Redirect(routes.HomeController.index()).withSession("login" -> form.get.login) else authRedirect.flashing("error" -> "Wrong credentials")
+      val user = usersRepository.checkCredentials(form.get.login, Auth.hashPassword(form.get.password))
+
+      if (user.isDefined) Redirect(routes.HomeController.index()).withSession("user_id" -> user.get.toString)
+      else authRedirect.flashing("error" -> "Wrong credentials")
     }
   }
 
 
 
   def logout() = Action { implicit request =>
-    Redirect(routes.AuthController.auth()).removingFromSession("login")
+    Redirect(routes.AuthController.auth()).removingFromSession("user_id")
   }
 }
